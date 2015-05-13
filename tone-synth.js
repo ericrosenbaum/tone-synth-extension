@@ -26,6 +26,10 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 			osc.frequency.value = freq;
 		};
 
+		ext.oscChangeFreqBy = function(freq) {
+			osc.frequency.value += freq;
+		};
+
 		// Block and block menu descriptions
 		var descriptor = {
 			blocks: [
@@ -33,6 +37,7 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 				[' ', 'oscillator on', 'oscOn'],
 				[' ', 'oscillator off', 'oscOff'],
 				[' ', 'set oscillator frequency %nHz', 'oscSetFreq', 440],
+				[' ', 'change oscillator frequency by %nHz', 'oscChangeFreqBy', 20],
 			]
 		};
 

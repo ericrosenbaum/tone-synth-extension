@@ -22,7 +22,7 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 			osc.stop();
 		};
 		
-		ext.oscSetFreq = funtion(freq) {
+		ext.oscSetFreq = function(freq) {
 			osc.frequency.value = freq;
 		};
 

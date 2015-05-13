@@ -17,8 +17,13 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		ext.oscOn = function() {
 			osc.start();
 		};
+		
 		ext.oscOff = function() {
 			osc.stop();
+		};
+		
+		ext.oscSetFreq = funtion(freq) {
+			osc.frequency.value = freq;
 		};
 
 		// Block and block menu descriptions
@@ -27,6 +32,7 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 				// Block type, block name, function name
 				[' ', 'oscillator on', 'oscOn'],
 				[' ', 'oscillator off', 'oscOff'],
+				[' ', 'set oscillator frequency %nHz', 'oscSetFreq', 440],
 			]
 		};
 

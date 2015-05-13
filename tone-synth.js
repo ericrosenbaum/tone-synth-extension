@@ -33,4 +33,4 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		// Register the extension
 		ScratchExtensions.register('Tone Synth extension', descriptor, ext);
 	})({});
-}
+});

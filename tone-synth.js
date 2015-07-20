@@ -2,8 +2,7 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 {
 	(function(ext) {
 	
-		var osc = new Tone.Oscillator(440, "sine").toMaster();
-		osc.volume.value = -10;
+		var osc = new Tone.SimpleSynth().toMaster();
 
 		// Cleanup function when the extension is unloaded
 		ext._shutdown = function() {};
@@ -15,19 +14,19 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		};
 
 		ext.oscOn = function() {
-			osc.start();
+			osc.triggerAttack();
 		};
 		
 		ext.oscOff = function() {
-			osc.stop();
+			osc.triggerRelease();
 		};
 		
 		ext.oscSetFreq = function(freq) {
-			osc.frequency.value = freq;
+			osc.setNote(freq);
 		};
 
 		ext.oscChangeFreqBy = function(freq) {
-			osc.frequency.value += freq;
+			osc.setNote(osc.frequency.value + freq);
 		};
 
 		// Block and block menu descriptions

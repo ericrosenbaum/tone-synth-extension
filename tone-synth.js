@@ -2,7 +2,18 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 {
 	(function(ext) {
 	
-		var osc = new Tone.SimpleSynth().toMaster();
+		var synthOptions = {
+			oscillator: {
+				type: "square"
+			},
+			envelope: {
+				attack: 0.03,
+				decay: 0.1,
+				sustain: 0.1,
+				release: 0.03
+			}
+		};			
+		var osc = new Tone.SimpleSynth(synthOptions).toMaster();
 
 		// Cleanup function when the extension is unloaded
 		ext._shutdown = function() {};

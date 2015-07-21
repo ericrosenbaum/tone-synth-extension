@@ -11,7 +11,8 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 				decay: 0.1,
 				sustain: 0.1,
 				release: 0.03
-			}
+			},
+			portamento: 0.05
 		};			
 		var osc = new Tone.SimpleSynth(synthOptions).toMaster();
 

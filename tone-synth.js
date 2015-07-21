@@ -17,7 +17,13 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 			portamento: 0.05
 		};			
 		
-		var osc = new Tone.SimpleSynth(synthOptions).toMaster();
+		var osc = new Tone.SimpleSynth(synthOptions);
+		
+		var lowPassFilt = new Tone.Filter(20000, "lowpass");
+		
+		osc.connect(lowPassFilt);
+		
+		lowPassFilt.toMaster();
 		
 		var targetFreq = osc.frequency.value;
 
@@ -56,6 +62,10 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		ext.freqForNote = function(noteNum) {
 			return tone.toFrequency(tone.midiToNote(noteNum + 12));
 		};
+		
+		ext.setLowPassFreq = function(freq) {
+			filt.frequency.value = freq;
+		};
 
 		// Block and block menu descriptions
 		var descriptor = {
@@ -66,7 +76,8 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 				[' ', 'set oscillator frequency %nHz', 'oscSetFreq', 440],
 				[' ', 'change oscillator frequency by %nHz', 'oscChangeFreqBy', 20],
 				['r', 'oscillator frequency', 'getFreq'],
-				['r', 'frequency of note %n', 'freqForNote'],
+				['r', 'frequency of note %n', 'freqForNote', 60],
+				[' ', 'set low pass filter frequency %nHz', 'setLowPassFreq', 200],
 			]
 		};
 

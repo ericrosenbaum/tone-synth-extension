@@ -64,7 +64,7 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		};
 		
 		ext.setLowPassFreq = function(freq) {
-			filt.frequency.value = freq;
+			lowPassFilt.frequency.value = freq;
 		};
 
 		// Block and block menu descriptions

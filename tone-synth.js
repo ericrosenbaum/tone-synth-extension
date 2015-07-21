@@ -20,6 +20,7 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		var osc = new Tone.SimpleSynth(synthOptions);
 		
 		var lowPassFilt = new Tone.Filter(20000, "lowpass");
+		lowPassFilt.Q = 10;
 		
 		osc.connect(lowPassFilt);
 		

@@ -2,6 +2,8 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 {
 	(function(ext) {
 	
+		var tone = new Tone();
+		
 		var synthOptions = {
 			oscillator: {
 				type: "square"
@@ -14,7 +16,9 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 			},
 			portamento: 0.05
 		};			
+		
 		var osc = new Tone.SimpleSynth(synthOptions).toMaster();
+		
 		var targetFreq = osc.frequency.value;
 
 		// Cleanup function when the extension is unloaded
@@ -48,6 +52,10 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		ext.getFreq = function() {
 			return targetFreq;
 		};
+		
+		ext.freqForNote = function(noteNum) {
+			return tone.toFrequency(tone.midiToNote(noteNum + 12));
+		};
 
 		// Block and block menu descriptions
 		var descriptor = {
@@ -58,6 +66,7 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 				[' ', 'set oscillator frequency %nHz', 'oscSetFreq', 440],
 				[' ', 'change oscillator frequency by %nHz', 'oscChangeFreqBy', 20],
 				['r', 'oscillator frequency', 'getFreq'],
+				['r', 'frequency of note %n', 'freqForNote'],
 			]
 		};
 

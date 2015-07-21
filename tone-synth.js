@@ -67,6 +67,10 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 			lowPassFilt.frequency.value = freq;
 		};
 
+		ext.changeLowPassFreqBy = function(freq) {
+			lowPassFilt.frequency.value += freq;
+		};
+
 		// Block and block menu descriptions
 		var descriptor = {
 			blocks: [
@@ -77,7 +81,8 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 				[' ', 'change oscillator frequency by %nHz', 'oscChangeFreqBy', 20],
 				['r', 'oscillator frequency', 'getFreq'],
 				['r', 'frequency of note %n', 'freqForNote', 60],
-				[' ', 'set low pass filter frequency %nHz', 'setLowPassFreq', 200],
+				[' ', 'set lowpass filter frequency %nHz', 'setLowPassFreq', 200],
+				[' ', 'change lowpass filter frequency by %nHz', 'changeLowPassFreqBy', 200],
 			]
 		};
 

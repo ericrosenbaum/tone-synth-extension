@@ -15,6 +15,7 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 			portamento: 0.05
 		};			
 		var osc = new Tone.SimpleSynth(synthOptions).toMaster();
+		var targetFreq = osc.frequency.value;
 
 		// Cleanup function when the extension is unloaded
 		ext._shutdown = function() {};
@@ -26,6 +27,7 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		};
 
 		ext.oscOn = function() {
+			osc.frequency.value = targetFreq;
 			osc.triggerAttack();
 		};
 		
@@ -34,11 +36,13 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		};
 		
 		ext.oscSetFreq = function(freq) {
-			osc.setNote(freq);
+			targetFreq = freq;
+			osc.setNote(targetFreq);
 		};
 
 		ext.oscChangeFreqBy = function(freq) {
-			osc.setNote(osc.frequency.value + freq);
+			targetFreq += freq;
+			osc.setNote(targetFreq);
 		};
 
 		// Block and block menu descriptions

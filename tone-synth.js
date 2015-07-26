@@ -18,15 +18,17 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		};			
 		
 		var osc = new Tone.SimpleSynth(synthOptions);
-		
 		var lowPassFilt = new Tone.Filter(20000, "lowpass");
 		lowPassFilt.Q = 10;
-		
 		osc.connect(lowPassFilt);
-		
 		lowPassFilt.toMaster();
-		
 		var targetFreq = osc.frequency.value;
+		
+		var triggerQuarterHat = false;
+		Tone.Transport.setInterval(function(time){
+			triggerQuarterHat = true;
+		}, "4n");
+		Tone.Transport.start();
 
 		// Cleanup function when the extension is unloaded
 		ext._shutdown = function() {};
@@ -72,6 +74,15 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 			lowPassFilt.frequency.value += freq;
 		};
 
+		ext.quarterHat = function() {
+			if (triggerQuarterHat) {
+				triggerQuarterHat = false;
+				return true;
+			} else {
+				return false;
+			}
+		};
+
 		// Block and block menu descriptions
 		var descriptor = {
 			blocks: [
@@ -84,6 +95,7 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 				['r', 'frequency of note %n', 'freqForNote', 60],
 				[' ', 'set lowpass filter frequency %nHz', 'setLowPassFreq', 200],
 				[' ', 'change lowpass filter frequency by %nHz', 'changeLowPassFreqBy', 200],
+				['h', 'every quarter note', 'quarterHat'],
 			]
 		};
 

@@ -24,10 +24,15 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		lowPassFilt.toMaster();
 		var targetFreq = osc.frequency.value;
 		
-		var triggerQuarterHat = false;
-		Tone.Transport.setInterval(function(time){
-			triggerQuarterHat = true;
-		}, "4n");
+		var intervalNames = ['eighth note', 'quarter note', 'half note', 'bar', 'two bars', 'four bars'];
+		var intervalNotation = ['8n', '4n', '2n', '1m', '2m', '4m'];
+		var intervalFlags = [];
+		for (var i = 0; i < intervalNames.length; i++) {
+			intervalFlags[i] = false;
+			Tone.Transport.setInterval(function(i, time){
+				intervalFlags[i] = true;
+			}.bind(undefined, i), intervalNotation[i]);
+		}
 		Tone.Transport.start();
 
 		// Cleanup function when the extension is unloaded
@@ -58,12 +63,28 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 			osc.setNote(targetFreq);
 		};
 		
+		ext.oscSetNote = function(note) {
+			targetFreq = getFreqForNote(note);
+			osc.setNote(targetFreq);
+		};
+
+		ext.oscChangeNoteBy = function(semitones) {
+			var ratio = tone.intervalToFrequencyRatio(semitones);
+			targetFreq *= ratio;
+			osc.setNote(targetFreq);
+		};
+
 		ext.getFreq = function() {
 			return targetFreq;
 		};
 		
-		ext.freqForNote = function(noteNum) {
+		function getFreqForNote(noteNum) {
 			return tone.toFrequency(tone.midiToNote(noteNum + 12));
+		}
+		
+		ext.freqForNote = function(noteNum) {
+			//return tone.toFrequency(tone.midiToNote(noteNum + 12));
+			return getFreqForNote(noteNum);
 		};
 		
 		ext.setLowPassFreq = function(freq) {
@@ -74,12 +95,16 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 			lowPassFilt.frequency.value += freq;
 		};
 
-		ext.quarterHat = function() {
-			if (triggerQuarterHat) {
-				triggerQuarterHat = false;
-				return true;
-			} else {
-				return false;
+		ext.intervalHat = function(interval) {
+			for (var i = 0; i < intervalNames.length; i++) {
+				if (interval == intervalNames[i]) {
+					if (intervalFlags[i]) {
+						intervalFlags[i] = false;
+						return true;
+					} else {
+						return false;
+					}
+				}
 			}
 		};
 
@@ -91,12 +116,17 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 				[' ', 'oscillator off', 'oscOff'],
 				[' ', 'set oscillator frequency %nHz', 'oscSetFreq', 440],
 				[' ', 'change oscillator frequency by %nHz', 'oscChangeFreqBy', 20],
+				[' ', 'set oscillator to note %n', 'oscSetNote', 60],
+				[' ', 'change oscillator note by %n', 'oscChangeNoteBy', 2],
 				['r', 'oscillator frequency', 'getFreq'],
 				['r', 'frequency of note %n', 'freqForNote', 60],
 				[' ', 'set lowpass filter frequency %nHz', 'setLowPassFreq', 200],
 				[' ', 'change lowpass filter frequency by %nHz', 'changeLowPassFreqBy', 200],
-				['h', 'every quarter note', 'quarterHat'],
-			]
+				['h', 'every %m.intervals', 'intervalHat'],
+			],
+			menus: {
+				intervals: intervalNames
+			}
 		};
 
 		// Register the extension

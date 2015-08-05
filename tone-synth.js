@@ -39,6 +39,10 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		// the actual frequency may ramp, portamento etc.
 
 		var targetFreq = synth.frequency.value;
+
+		var scaleRoot = 48; // root is note C2
+		var minNote = 24;
+		var maxNote = 127;
 		
 		// polysynth
 		// var polySynth = new Tone.PolySynth(6, Tone.MonoSynth).toMaster();
@@ -88,66 +92,80 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		ext.synthOff = function() {
 			synth.triggerRelease();
 		};
-		
-		/// synth frequency control
-
-		ext.synthSetFreq = function(freq) {
-			targetFreq = freq;
-			synth.setNote(targetFreq);
-		};
-
-		ext.synthChangeFreq = function(freq) {
-			targetFreq += freq;
-			synth.setNote(targetFreq);
-		};
-
-		ext.synthGetFreq = function() {
-			return targetFreq;
-		};
 
 		// synth note control
 
-		ext.synthSetNote = function(note) {
-			note = clamp(note, 24, 127);
-			targetFreq = MidiToFrequency(note);
-			synth.setNote(targetFreq);
+		ext.synthSetFreq = function(control, val) {
+			switch (control) {
+				case 'note':
+					var note = clamp(val, minNote, maxNote);
+					targetFreq = midiToFrequency(note);
+					synth.setNote(targetFreq);
+					break;
+				case 'major scale note':
+					var note = majorScaleToMidi(val);
+					note = clamp(note, minNote, maxNote);
+					targetFreq = midiToFrequency(note);
+					synth.setNote(targetFreq);					
+					break;
+				case 'frequency':
+					targetFreq = val;
+					synth.setNote(targetFreq);
+					break;
+			}
 		};
 
-		function MidiToFrequency(noteNum) {
+		ext.synthChangeFreq = function(control, val) {
+			switch (control) {									
+				case 'note':
+					var ratio = tone.intervalToFrequencyRatio(val);
+					targetFreq *= ratio;
+					synth.setNote(targetFreq);
+					console.log(targetFreq);
+					break;
+				case 'major scale note':
+					var currentNoteName = tone.frequencyToNote(targetFreq);
+					var currentMidiNote = tone.noteToMidi(noteName);
+					// this requires more work!
+					// need to find current nearest major scale degree and octave
+					// then modify and convert back to midi then to freq
+
+					break;
+				case 'frequency':
+					targetFreq += val;
+					synth.setNote(targetFreq);
+					console.log(targetFreq);
+					break;
+			}
+		};
+
+		ext.synthGetFreq = function(control) {
+			switch (control) {
+				case 'note':
+					var noteName = tone.frequencyToNote(targetFreq);
+					var midiNote = tone.noteToMidi(noteName);
+					return (midiNote);
+					break;
+				case 'major scale note':
+					// needs work!
+					break;
+				case 'frequency':
+					return targetFreq;
+					break;
+			}
+		};
+
+		function midiToFrequency(noteNum) {
 			return tone.toFrequency(tone.midiToNote(noteNum));
-		}
-
-		ext.synthChangeNote = function(semitones) {
-			var ratio = tone.intervalToFrequencyRatio(semitones);
-			targetFreq *= ratio;
-			synth.setNote(targetFreq);
 		};
 
-		ext.synthGetNote = function() {
-			var noteName = tone.frequencyToNote(targetFreq);
-			var midiNote = tone.noteToMidi(noteName);
+		function majorScaleToMidi(note) {
+			var majorScale = [0,2,4,5,7,9,11,12];
+			note = round(note);
+			var scaleDegree = note % majorScale.length;
+			var octave = floor(note / majorScale.length);
+			var midiNote = scaleRoot + octave * 12 + majorScale[scaleDegree];
 			return (midiNote);
-		};
-
-		// synth volume
-		
-		ext.synthSetVolume = function(vol) {
-			vol = clamp(vol, 0, 100);
-			var db = tone.gainToDb(vol/100);
-			Tone.Master.volume.rampTo(db, 0.01);
-		};
-
-		ext.synthChangeVolume = function(vol) {
-			var currentDb = Tone.Master.volume.value;
-			var currentVol = tone.dbToGain(currentDb)*100;
-			vol += currentVol; 
-			vol = clamp(vol, 0, 100);
-			var db = tone.gainToDb(vol/100);
-			Tone.Master.volume.rampTo(db, 0.01);
-		};
-
-		ext.synthGetVolume = function() {
-			return (tone.dbToGain(Tone.Master.volume.value)*100);
 		};
 
 		// effects
@@ -168,6 +186,10 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 					break;
 				case 'pan left/right': 
 					panner.pan.value = amt/100;
+					break;
+				case 'volume':
+					var db = tone.gainToDb(amt/100);
+					Tone.Master.volume.rampTo(db, 0.01);
 					break;
 			}
 		};
@@ -190,6 +212,14 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 				case 'pan left/right': 
 					panner.pan.value += amt/100;
 					break;
+				case 'volume':
+					var currentDb = Tone.Master.volume.value;
+					var currentVol = tone.dbToGain(currentDb)*100;
+					var newVol = currentVol + amt; 
+					newVol = clamp(newVol, 0, 100);
+					var db = tone.gainToDb(newVol/100);
+					Tone.Master.volume.rampTo(db, 0.01);
+					break;
 			}
 		};
 
@@ -198,6 +228,7 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 			autoWah.Q.value = 0;
 			autoWah.wet.value = 0;
 			panner.pan.value = 0.5;
+			Tone.Master.volume.rampTo(0, 0.01);
 		};
 
 		ext.setDelayTime = function(delayTime) {
@@ -206,11 +237,11 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 
 		ext.setOscType = function(type) {
 			synth.oscillator.type = type;
-		}
+		};
 
 		function clamp(input, min, max) {
 			return Math.min(Math.max(input, min), max);
-		}
+		};
 
 		/*
 		ext.intervalHat = function(interval) {
@@ -245,29 +276,23 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 				[' ', 'synth on', 'synthOn'],
 				[' ', 'synth off', 'synthOff'],
 
-				[' ', 'set synth frequency %n Hz', 'synthSetFreq', 200],
-				[' ', 'change synth frequency by %n Hz', 'synthChangeFreq', 50],
-				['r', 'synth frequency', 'synthGetFreq'],
-
-				[' ', 'set synth note %n', 'synthSetNote', 60],
-				[' ', 'change synth note by %n', 'synthChangeNote', 1],
-				['r', 'synth note', 'synthGetNote'],
-
-				[' ', 'synth volume %n%', 'synthSetVolume', 50],
-				[' ', 'synth change volume by %n%', 'synthChangeVolume', 10],
-				['r', 'synth volume', 'synthGetVolume'],
+				[' ', 'synth set %m.freqControls %n', 'synthSetFreq', 'note', 60],
+				[' ', 'synth change %m.freqControls by %n', 'synthChangeFreq', 'note', 1],
+				['r', 'synth %m.freqControls', 'synthGetFreq', 'note'],
 
 				[' ', 'set synth effect %m.effects to %n%', 'setEffect', 'echo', 100],
 				[' ', 'change synth effect %m.effects by %n%', 'changeEffect', 'echo', 10],
 				[' ', 'clear synth effects', 'clearEffects'],
+
 				[' ', 'set echo delay time %n secs', 'setDelayTime', 0.25],
 
 				[' ', 'synth oscillator type %m.oscTypes', 'setOscType', 'sine']
 
 			],
 				menus: {
-					effects: ['echo', 'wah', 'pan left/right'],
-					oscTypes: ['sine', 'triangle', 'square', 'sawtooth', 'pwm']
+					effects: ['echo', 'wah', 'pan left/right', 'volume'],
+					oscTypes: ['sine', 'triangle', 'square', 'sawtooth', 'pwm'],
+					freqControls: ['note', 'frequency']
 				}
 		};
 

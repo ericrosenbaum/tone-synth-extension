@@ -8,7 +8,7 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 
 		var synthOptions = {
 			oscillator: {
-				type: "sine"
+				type: "triangle"
 			},
 			envelope: {
 				attack: 0.03,
@@ -26,8 +26,10 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		var autoWah = new Tone.AutoWah();
 		autoWah.wet.value = 0;
 		autoWah.sensitivity.value = -40;
+
 		var delay = new Tone.FeedbackDelay(0.25, 0.5);
 		delay.wet.value = 0;
+		
 		var panner = new Tone.Panner(0.5);
 		
 		synth.connect(autoWah);
@@ -68,7 +70,11 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		// Status reporting code
 		// Use this to report missing hardware, plugin or unsupported browser
 		ext._getStatus = function() {
-			return {status: 2, msg: 'Ready'};
+			if (typeof AudioContext !== "undefined") {
+				return {status: 2, msg: 'Ready'};
+			} else {
+				return {status: 1, msg: 'Device not connected'};
+			}
 		};
 
 
@@ -169,6 +175,7 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 		};
 
 		// effects
+
 		ext.setEffect = function(effectName, amt) {
 			amt = clamp(amt, 0, 100);
 
@@ -185,7 +192,7 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 					autoWah.Q.value = (amt / 100) * 6;
 					break;
 				case 'pan left/right': 
-					panner.pan.value = amt/100;
+					panner.pan.value = amt / 100;
 					break;
 				case 'volume':
 					var db = tone.gainToDb(amt/100);
@@ -284,9 +291,9 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 				[' ', 'change synth effect %m.effects by %n%', 'changeEffect', 'echo', 10],
 				[' ', 'clear synth effects', 'clearEffects'],
 
-				[' ', 'set echo delay time %n secs', 'setDelayTime', 0.25],
+				[' ', 'set echo delay time %n secs', 'setDelayTime', 0.5],
 
-				[' ', 'synth oscillator type %m.oscTypes', 'setOscType', 'sine']
+				[' ', 'synth oscillator type %m.oscTypes', 'setOscType', 'square']
 
 			],
 				menus: {

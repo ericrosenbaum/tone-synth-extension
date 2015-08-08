@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>Scratch Tone Synth Extension</title>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+
+<div id="header-container">
+  <header>
+    <h1>Scratch Tone Synth Extension</h1>
+  </header>
+</div>
+
+<div id="content-container">
+
+  <h1>Contents</h1>
+
+  <ul id="nav">
+    <li><a href="#intro">Introduction</a></li>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#blocks">Scratch Blocks</a></li>
+    <li><a href="#examples">Example Projects</a></li>
+  </ul>
+
+  <a name="intro" />
+  <h1>Introduction</h1>
+
+  <p>This <a href="https://scratch.mit.edu">Scratch</a> extension provides you with a set of blocks you can use to generate your own tones!</p>
+  <p>With blocks to change the tone frequency, effects, and ocsillator type, this extension gives you all the tools you need to create your own interactive music project!</p>
+
+  <p><a target="_new" href="http://tonejs.org">Tone.js</a> and the <a target="_new" href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">Web Audio API</a> are used to power this extension.</p>
+
+  <img class="thumbnail" src="res/screenshot.png" />
+  <br />
+  <i>Bouncing Synth Ball available in the <a href="#examples">Example Projects</a></i>
+
+  <a name="getting-started" />
+  <h1>Getting Started</h1>
+
+  <p>The Web Audio API is not supported by Internet Explorer at this time.</p>
+  <p>Google Chrome, Firefox, and Safari web browsers should all work with this extension.</p>
+  <p><a target="_new" href="http://scratchx.org/?url=http://ericrosenbaum.github.io/tone-synth-extension/tone-synth.js">Launch the tone synth extension on ScratchX</a>.</p>
+
+  <a name="blocks" />
+  <h1>Scratch Blocks</h1>
+
+  <div class="block">
+  <img height="40" src="res/synth_on_for.png" />
+  <p>Turn the tone on for a specified number of seconds.</p>
+  </div>
+
+  <hr />
+
+  <div class="block">
+  <img height="40" src="res/synth_on_for_wait.png" />
+  <p>Turn the tone on for a specified number of seconds. Wait until the tone is complete before going on to the next block.</p>
+  </div>
+
+  <hr />
+
+  <div class="block">
+  <img height="40" src="res/synth_on.png" />
+  <p>Turn the tone on.</p>
+  </div>
+
+  <hr />
+
+  <div class="block">
+  <img height="40" src="res/synth_off.png" />
+  <p>Turn the tone off.</p>
+  </div>
+
+  <hr />
+
+  <div class="block">
+  <img height="40" src="res/synth_set_note.png" />
+  <p>Set the tone to either a note (MIDI Key) or frequency (Hz).</p>
+  <p><a target="_new" href="http://www.richardbrice.net/midi_notes.htm">MIDI notes and frequency table</a></p>
+  </div>
+
+  <hr />
+
+  <div class="block">
+  <img height="40" src="res/synth_change_note.png" />
+  <p>Change note (MIDI Key) or frequency (Hz) by a specified number.</p>
+  </div>
+
+  <hr />
+
+  <div class="block">
+  <img height="32" src="res/synth_type.png" />
+  <p>Switch tone between note (MIDI Key) and frequency (Hz).</p>
+  </div>
+
+  <hr />
+
+  <div class="block">
+  <img height="40" src="res/synth_set_effect.png" />
+  <p>Set tone effect (echo, wah, pan left/right, volume) to a value between 0 and 100%.</p>
+  </div>
+
+  <hr />
+
+  <div class="block">
+  <img height="40" src="res/synth_change_effect.png" />
+  <p>Change tone effect (echo, wah, pan left/right, volume) to a value between 0 and 100%.</p>
+
+  <hr />
+
+  <div class="block">
+  <img height="40" src="res/synth_clear_effect.png" />
+  <p>Clear all synth effects.</p>
+  </div>
+
+  <hr />
+
+  <div class="block">
+  <img height="40" src="res/synth_echo_delay.png" />
+  <p>Create an echo delay for a specified number of seconds.</p>
+  </div>
+
+  <hr />
+
+  <div class="block">
+  <img height="40" src="res/synth_oscillator_type.png" />
+  <p>Change the oscillator waveform between sine, triangle, square, sawtooth, and pwm.</p>
+  <p><a target="_new" href="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables">Information on oscillator waveforms</a></p>
+  </div>
+
+  <a name="examples" />
+  <h1>Example Projects</h1>
+
+  <dl>
+    <dt><a target="_new" href="http://scratchx.org/?url=http://ericrosenbaum.github.io/tone-synth-extension/examples/Bouncing%20Synth%20Ball.sbx">Bouncing Synth Ball</a></dt>
+    <dd>When the ball crosses the red or blue lines the oscillator turns on and changes frequencies.</dd>
+    <br />
+    <dt><a target="_new" href="http://scratchx.org/?url=http://ericrosenbaum.github.io/tone-synth-extension/examples/synth-test.sbx">Synth Test</a></dt>
+    <dd>Example project demonstrating of the capabilities of the synth extension.</dd>
+  </dl>
+
+</div>
+
+<br />
+
+</body>
+</html>

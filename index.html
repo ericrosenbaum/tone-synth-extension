@@ -26,8 +26,8 @@
   <a name="intro" />
   <h1>Introduction</h1>
 
-  <p>This <a href="https://scratch.mit.edu">Scratch</a> extension provides you with a set of blocks you can use to generate your own tones!</p>
-  <p>With blocks to change the tone frequency, effects, and ocsillator type, this extension gives you all the tools you need to create your own interactive music project!</p>
+  <p>This <a href="https://scratch.mit.edu">Scratch</a> extension provides you with a set of blocks you can use to generate your own sounds.</p>
+  <p>Experiment with a sound synthesizer with blocks that control frequency and waveform, and effects like echo, pan and wah. You can use it to code your own funky electronic music or make weird new sound effects.</p>
 
   <p><a target="_new" href="http://tonejs.org">Tone.js</a> and the <a target="_new" href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">Web Audio API</a> are used to power this extension.</p>
 
@@ -54,7 +54,7 @@
 
   <div class="block">
   <img height="40" src="res/synth_on_for_wait.png" />
-  <p>Turn the tone on for a specified number of seconds. Wait until the tone is complete before going on to the next block.</p>
+  <p>Turn the tone on for a specified number of seconds. Waits until the tone is complete before going on to the next block.</p>
   </div>
 
   <hr />
@@ -90,21 +90,27 @@
 
   <div class="block">
   <img height="32" src="res/synth_type.png" />
-  <p>Switch tone between note (MIDI Key) and frequency (Hz).</p>
+  <p>Report the synthesizer's current note (MIDI Key) or frequency (Hz).</p>
   </div>
 
   <hr />
 
   <div class="block">
   <img height="40" src="res/synth_set_effect.png" />
-  <p>Set tone effect (echo, wah, pan left/right, volume) to a value between 0 and 100%.</p>
+  <p>Set an effect (echo, wah, pan left/right, volume) to a value between 0 and 100%.
+    <ul>
+      <li>echo: repeats sounds with a delay (0% is off, 100% is full volume)</li>
+      <li>wah: adds a "wah" effect to the beginning of each new sound (0% is off, 100% is the strongest effect)</a>
+      <li>pan left/right: Shift stereo sound from the left speaker (0%) to the right speaker (100%)</li>
+    </ul>
+  </p>
   </div>
 
   <hr />
 
   <div class="block">
   <img height="40" src="res/synth_change_effect.png" />
-  <p>Change tone effect (echo, wah, pan left/right, volume) to a value between 0 and 100%.</p>
+  <p>Change tone effect (echo, wah, pan left/right, volume) by a value between 0 and 100%.</p>
 
   <hr />
 
@@ -117,14 +123,14 @@
 
   <div class="block">
   <img height="40" src="res/synth_echo_delay.png" />
-  <p>Create an echo delay for a specified number of seconds.</p>
+  <p>Set the delay time in seconds for the echo effect (you have to also use the "set synth effect echo" block to turn it on).</p>
   </div>
 
   <hr />
 
   <div class="block">
   <img height="40" src="res/synth_oscillator_type.png" />
-  <p>Change the oscillator waveform between sine, triangle, square, sawtooth, and pwm.</p>
+  <p>Change the oscillator waveform between sine, triangle, square, sawtooth, and pwm. </p>
   <p><a target="_new" href="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables">Information on oscillator waveforms</a></p>
   </div>
 
@@ -135,8 +141,11 @@
     <dt><a target="_new" href="http://scratchx.org/?url=http://ericrosenbaum.github.io/tone-synth-extension/examples/Bouncing%20Synth%20Ball.sbx">Bouncing Synth Ball</a></dt>
     <dd>When the ball crosses the red or blue lines the oscillator turns on and changes frequencies.</dd>
     <br />
-    <dt><a target="_new" href="http://scratchx.org/?url=http://ericrosenbaum.github.io/tone-synth-extension/examples/synth-test.sbx">Synth Test</a></dt>
-    <dd>Example project demonstrating of the capabilities of the synth extension.</dd>
+    <dt><a target="_new" href="http://scratchx.org/?url=http://ericrosenbaum.github.io/tone-synth-extension/examples/Synth%20Racer.sbx">Synth Racer</a></dt>
+    <dd>Drive a ball with the arrow keys to make synthesized engine sounds. The engine sound increases in frequency with the ball's velocity. Drive over the red and blue circles for a bounce or a boost.</dd>
+    <br />
+    <dt><a target="_new" href="http://scratchx.org/?url=http://ericrosenbaum.github.io/tone-synth-extension/examples/Synth Sounds.sbx">Synth Test</a></dt>
+    <dd>Example project demonstrating of the capabilities of the synth extension with sound effects triggered by arrow keys and the mouse.</dd>
   </dl>
 
 </div>

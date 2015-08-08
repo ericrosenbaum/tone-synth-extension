@@ -73,7 +73,7 @@ $.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
 			if (typeof AudioContext !== "undefined") {
 				return {status: 2, msg: 'Ready'};
 			} else {
-				return {status: 1, msg: 'Device not connected'};
+				return {status: 1, msg: 'Browser not supported'};
 			}
 		};
 

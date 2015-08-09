@@ -5,7 +5,7 @@ body {
 }
 
 h1 {
-  color: #16a085;
+  color: #660066;
 }
 
 dt {
@@ -16,8 +16,8 @@ dt {
 #header-container {
   margin: 0 0 50px 0;
   padding: 30px 0;
-  background-color: #16a085;
-  border-bottom: 1px solid #D9D9D9;
+  background-color: #660066;
+  border-bottom: 2px solid #D9D9D9;
 }
 
 header {
@@ -31,6 +31,20 @@ header h1 {
   color: #FFF;
 }
 
+a:link {
+  color: #CC00FF;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #9900CC;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 #content-container {
   margin: 0 auto;
   max-width: 700px;
@@ -39,21 +53,10 @@ header h1 {
 #nav {
   list-style-type: none;
   padding: 0;
+  text-decoration: none;
 }
 
 #nav li {
   padding-top: 2px;
 }
 
-#nav a {
-  color: blue;
-  text-decoration: none;
-}
-
-#nav a:hover {
-  text-decoration: underline;
-}
-
-#nav a:visited {
-  color: blue;
-}

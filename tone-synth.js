@@ -183,10 +183,11 @@
 
 		ext.setEffect = function(effectName, amt) {
 			amt = clamp(amt, 0, 100);
+			amt /= 100;
 
 			switch (effectName) {
 				case 'echo': 
-					delay.wet.value = (amt/2)/100;
+					delay.wet.value = amt/2;
 					break;
 				case 'wah': 
 					if (amt == 0) {
@@ -194,29 +195,31 @@
 					} else {
 						autoWah.wet.value = 1;
 					}
-					autoWah.Q.value = (amt / 100) * 6;
+					autoWah.Q.value = amt * 6;
 					break;
 				case 'pan left/right': 
-					panner.pan.value = amt / 100;
+					panner.pan.value = amt;
 					break;
 				case 'glide':
-					synth.portamento = (amt / 100) * 0.25; 
+					synth.portamento = amt * 0.25; 
 					break;
 				case 'volume':
-					var db = tone.gainToDb(amt/100);
+					var db = tone.gainToDb(amt);
 					Tone.Master.volume.rampTo(db, 0.01);
 					break;
 			}
 		};
 
 		ext.changeEffect = function(effectName, amt) {
+			amt /= 100;
+
 			switch (effectName) {
 				case 'echo': 
-					delay.wet.value += (amt/2)/100;
+					delay.wet.value += amt/2;
 					delay.wet.value = clamp(delay.wet.value, 0, 0.5);
 					break;
 				case 'wah': 
-					autoWah.Q.value += (amt / 100) * 6;
+					autoWah.Q.value += amt * 6;
 					autoWah.Q.value = clamp(autoWah.Q.value, 0, 6);
 					if (autoWah.Q.value == 0) {
 						autoWah.wet.value = 0;
@@ -225,17 +228,18 @@
 					}
 					break;
 				case 'pan left/right': 
-					panner.pan.value += amt/100;
+					panner.pan.value += amt;
+					panner.pan.value = clamp(panner.pan.value, 0, 1);
 					break;
 				case 'glide':
-					synth.portamento += amt/100 * 0.25; 
+					synth.portamento += amt * 0.25; 
 					break;
 				case 'volume':
 					var currentDb = Tone.Master.volume.value;
-					var currentVol = tone.dbToGain(currentDb)*100;
+					var currentVol = tone.dbToGain(currentDb);
 					var newVol = currentVol + amt; 
-					newVol = clamp(newVol, 0, 100);
-					var db = tone.gainToDb(newVol/100);
+					newVol = clamp(newVol, 0, 1);
+					var db = tone.gainToDb(newVol);
 					Tone.Master.volume.rampTo(db, 0.01);
 					break;
 			}

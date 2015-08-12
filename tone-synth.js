@@ -16,7 +16,7 @@ $.getScript('http://ericrosenbaum.github.io/tone-synth-extension/Tone.min.js', f
 				sustain: 1,
 				release: 0.03
 			},
-			portamento: 0
+			portamento: 0.02
 		};			
 		
 		var synth = new Tone.SimpleSynth(synthOptions);

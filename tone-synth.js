@@ -1,4 +1,4 @@
-$.getScript('http://cdn.tonejs.org/latest/Tone.min.js', function()
+$.getScript('http://ericrosenbaum.github.io/tone-synth-extension/Tone.min.js', function()
 {
 	(function(ext) {
 	

@@ -1,7 +1,13 @@
-$.getScript('http://ericrosenbaum.github.io/tone-synth-extension/Tone.min.js', function()
-{
-	(function(ext) {
-	
+(function(ext) {
+
+	if (typeof Tone !== 'undefined') {
+		console.log('Tone library is already loaded');
+		startSynth();
+	} else {
+		$.getScript('http://ericrosenbaum.github.io/tone-synth-extension/Tone.min.js', startSynth);
+	}
+
+	function startSynth() {
 		var tone = new Tone();
 		
 		// synth is a single oscillator
@@ -16,10 +22,11 @@ $.getScript('http://ericrosenbaum.github.io/tone-synth-extension/Tone.min.js', f
 				sustain: 1,
 				release: 0.03
 			},
-			portamento: 0.02
 		};			
 		
 		var synth = new Tone.SimpleSynth(synthOptions);
+
+		synth.portamento = 0;
 
 		// effects chain
 
@@ -127,7 +134,6 @@ $.getScript('http://ericrosenbaum.github.io/tone-synth-extension/Tone.min.js', f
 					var ratio = tone.intervalToFrequencyRatio(val);
 					targetFreq *= ratio;
 					synth.setNote(targetFreq);
-					console.log(targetFreq);
 					break;
 				case 'major scale note':
 					var currentNoteName = tone.frequencyToNote(targetFreq);
@@ -140,7 +146,6 @@ $.getScript('http://ericrosenbaum.github.io/tone-synth-extension/Tone.min.js', f
 				case 'frequency':
 					targetFreq += val;
 					synth.setNote(targetFreq);
-					console.log(targetFreq);
 					break;
 			}
 		};
@@ -194,6 +199,9 @@ $.getScript('http://ericrosenbaum.github.io/tone-synth-extension/Tone.min.js', f
 				case 'pan left/right': 
 					panner.pan.value = amt / 100;
 					break;
+				case 'glide':
+					synth.portamento = (amt / 100) * 0.25; 
+					break;
 				case 'volume':
 					var db = tone.gainToDb(amt/100);
 					Tone.Master.volume.rampTo(db, 0.01);
@@ -219,6 +227,9 @@ $.getScript('http://ericrosenbaum.github.io/tone-synth-extension/Tone.min.js', f
 				case 'pan left/right': 
 					panner.pan.value += amt/100;
 					break;
+				case 'glide':
+					synth.portamento += amt/100 * 0.25; 
+					break;
 				case 'volume':
 					var currentDb = Tone.Master.volume.value;
 					var currentVol = tone.dbToGain(currentDb)*100;
@@ -235,6 +246,7 @@ $.getScript('http://ericrosenbaum.github.io/tone-synth-extension/Tone.min.js', f
 			autoWah.Q.value = 0;
 			autoWah.wet.value = 0;
 			panner.pan.value = 0.5;
+			synth.portamento = 0;
 			Tone.Master.volume.rampTo(0, 0.01);
 		};
 
@@ -297,7 +309,7 @@ $.getScript('http://ericrosenbaum.github.io/tone-synth-extension/Tone.min.js', f
 
 			],
 				menus: {
-					effects: ['echo', 'wah', 'pan left/right', 'volume'],
+					effects: ['echo', 'wah', 'pan left/right', 'glide', 'volume'],
 					oscTypes: ['sine', 'triangle', 'square', 'sawtooth', 'pwm'],
 					freqControls: ['note', 'frequency']
 				}
@@ -305,5 +317,7 @@ $.getScript('http://ericrosenbaum.github.io/tone-synth-extension/Tone.min.js', f
 
 		// Register the extension
 		ScratchExtensions.register('Synth Extension', descriptor, ext);
-	})({});
-});
+	
+	};
+
+})({});

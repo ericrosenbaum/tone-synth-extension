@@ -72,7 +72,9 @@
 		*/
 
 		// Cleanup function when the extension is unloaded
-		ext._shutdown = function() {};
+		ext._shutdown = function() {
+			stopAllSounds();
+		};
 
 		// Status reporting code
 		// Use this to report missing hardware, plugin or unsupported browser
@@ -84,6 +86,9 @@
 			}
 		};
 
+		function stopAllSounds() {
+			synth.triggerRelease();	
+		}
 
 		/// turn synth on and off
 

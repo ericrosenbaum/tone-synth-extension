@@ -294,6 +294,10 @@
 		};
 		*/
 
+        ext._stop = function() {
+			synth.triggerRelease();
+        };
+
 		// Block and block menu descriptions
 
 		var descriptor = {

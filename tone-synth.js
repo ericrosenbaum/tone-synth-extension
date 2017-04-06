@@ -51,7 +51,7 @@
 
 		var scaleRoot = 48; // root is note C2
 		var minNote = 24;
-		var maxNote = 127;
+		var maxNote = 100;
 		
 		// polysynth
 		// var polySynth = new Tone.PolySynth(6, Tone.MonoSynth).toMaster();
